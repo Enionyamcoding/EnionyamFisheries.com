@@ -12,15 +12,13 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
         }
 
         /* Calculator Container */
         .calculator-container {
-            width: 90%;
-            max-width: 600px;
+            width: 100%;
             padding: 20px;
             background-color: #ffffff;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -90,7 +88,7 @@
         }
 
         /* Footer Ad Space */
-        .bottom-ad-space {
+        .footer-ad-space {
             width: 100%;
             height: 40vh;
             background-color: #ffffff;
@@ -103,56 +101,44 @@
             font-size: 24px;
             font-weight: bold;
             text-align: center;
-            margin-top: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
         }
 
-        /* Popup Ad */
+        /* Popup Ad Space */
         .popup-ad {
-            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 80%;
-            max-width: 400px;
-            padding: 20px;
+            max-width: 600px;
             background-color: #ffffff;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+            padding: 20px;
             text-align: center;
             z-index: 1000;
+            display: none;
         }
 
-        .popup-ad img, .popup-ad video {
+        .popup-ad img,
+        .popup-ad video {
             width: 100%;
             height: auto;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
-        .popup-ad button {
-            margin-top: 10px;
-            padding: 10px;
+        .popup-ad .close-btn {
             background-color: #00796b;
             color: white;
             border: none;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: bold;
-        }
-
-        .popup-ad button:hover {
-            background-color: #004d40;
-        }
-
-        @media (max-width: 768px) {
-            .calculator-container {
-                width: 100%;
-            }
-            
-            .bottom-ad-space {
-                height: 200px;
-            }
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -184,49 +170,71 @@
         </div>
     </div>
 
-    <div class="bottom-ad-space">
-        <video src="your_video.mp4" controls></video>
-        <!-- <img src="your_image.jpg" alt="Ad Image"> -->
+    <div class="footer-ad-space">
+        <!-- Footer Ad Image/Video -->
+        <img src="your-ad-image.jpg" alt="Footer Ad">
+        <video src="your-ad-video.mp4" controls></video>
     </div>
 
     <div class="popup-ad" id="popupAd">
-        <video src="popup_video.mp4" controls></video>
-        <!-- <img src="popup_image.jpg" alt="Popup Image"> -->
-        <button onclick="closePopup()">Close</button>
+        <!-- Popup Ad Image/Video -->
+        <img src="your-popup-ad-image.jpg" alt="Popup Ad">
+        <video src="your-popup-ad-video.mp4" controls></video>
+        <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
 
     <script>
         function calculate() {
+            // Get input values
             const length = document.getElementById('length').value;
             const width = document.getElementById('width').value;
             const depth = document.getElementById('depth').value;
 
+            // Calculate volume in cubic feet
             const volumeCubicFeet = length * width * depth;
-            const volumeGallons = volumeCubicFeet * 7.48;
-            const volumeLiters = volumeGallons * 3.785;
-            const stockingDensity = Math.floor(volumeLiters / 8);
-            const vinegarNeededLiters = volumeGallons * 0.001;
 
+            // Convert volume to gallons
+            const volumeGallons = volumeCubicFeet * 7.48;
+
+            // Convert volume to liters
+            const volumeLiters = volumeGallons * 3.785;
+
+            // Calculate stocking density (using 8 liters per fish)
+            const stockingDensity = Math.floor(volumeLiters / 8);
+
+            // Calculate vinegar needed (in liters)
+            const vinegarNeededLiters = volumeGallons * 0.001; // 1 ml per gallon, 0.001 liters per gallon
+
+            // Display results
             document.getElementById('volumeResult').innerText = `Pond Volume: ${volumeGallons.toFixed(2)} gallons (${volumeLiters.toFixed(2)} liters)`;
             document.getElementById('stockingResult').innerText = `Stocking Density: ${stockingDensity} fish`;
             document.getElementById('vinegarResult').innerText = `Vinegar Required: ${vinegarNeededLiters.toFixed(3)} liters`;
         }
 
-        function showPopup() {
-            document.getElementById('popupAd').style.display = 'block';
-            setTimeout(closePopup, 10000); // Close popup after 10 seconds
-        }
-
+        // Function to close popup ad
         function closePopup() {
-            document.getElementById('popupAd').style.display = 'none';
+            const popupAd = document.getElementById('popupAd');
+            popupAd.style.display = 'none';
+
+            setTimeout(function () {
+                popupAd.style.display = 'block';
+            }, 20000); // Popup reappears after 20 seconds
         }
 
-        setInterval(showPopup, 20000); // Show popup every 20 seconds
+        // Function to show popup ad
+        function showPopup() {
+            const popupAd = document.getElementById('popupAd');
+            popupAd.style.display = 'block';
+        }
+
+        // Show popup ad initially after 20 seconds
+        setTimeout(showPopup, 20000);
     </script>
 
 </body>
 
 </html>
+
 
 
 
