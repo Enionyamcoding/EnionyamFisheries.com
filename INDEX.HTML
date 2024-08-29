@@ -195,15 +195,10 @@
             </select>
         </div>
         <div class="input-group">
-            <label for="numberOfFish">Number of Fish:</label>
-            <input type="number" id="numberOfFish" placeholder="Enter the number of fish">
-        </div>
-        <div class="input-group">
             <button onclick="calculateFeed()">Calculate Feed</button>
         </div>
         <div class="results">
             <p id="feedResult"></p>
-            <p id="monthlyFeedResult"></p>
         </div>
     </div>
 
@@ -242,76 +237,67 @@
             const volumeCubicFeet = length * width * depth;
             const volumeGallons = volumeCubicFeet * 7.48;
             const volumeLiters = volumeGallons * 3.785;
-            const stockingDensity = Math.floor(length * width * 2);
+            const stockingDensity = Math.floor(volumeLiters / 8);
             const vinegarNeededLiters = volumeGallons * 0.001;
 
             document.getElementById('volumeResult').innerText = `Pond Volume: ${volumeGallons.toFixed(2)} gallons (${volumeLiters.toFixed(2)} liters)`;
             document.getElementById('stockingResult').innerText = `Stocking Density: ${stockingDensity} fish`;
             document.getElementById('vinegarResult').innerText = `Vinegar Required: ${vinegarNeededLiters.toFixed(3)} liters`;
-
-            // Set the number of fish in feed calculator
-            document.getElementById('numberOfFish').value = stockingDensity;
         }
 
         function calculateFeed() {
             const stage = document.getElementById('stage').value;
-            const numberOfFish = parseInt(document.getElementById('numberOfFish').value, 10);
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const depth = parseFloat(document.getElementById('depth').value);
 
-            if (isNaN(numberOfFish) || numberOfFish <= 0) {
-                alert('Please enter a valid number of fish.');
-                return;
-            }
+            const volumeCubicFeet = length * width * depth;
+            const volumeGallons = volumeCubicFeet * 7.48;
+            const volumeLiters = volumeGallons * 3.785;
+            const stockingDensity = Math.floor(volumeLiters / 8);
 
-            // Average fish weight in kg for each stage
-            let averageFishWeightKg;
-            let feedPercentage;
-
+            let feedRequirementPerDay;
             switch (stage) {
                 case 'fingerlings':
-                    averageFishWeightKg = 0.01; // 10 grams
-                    feedPercentage = 7; // 7% of body weight
+                    const totalWeightFingerlings = stockingDensity * 0.01; // Assuming 10 grams per fingerling
+                    feedRequirementPerDay = totalWeightFingerlings * 0.05; // 5% of body weight
                     break;
                 case 'juveniles':
-                    averageFishWeightKg = 0.05; // 50 grams
-                    feedPercentage = 5; // 5% of body weight
+                    const totalWeightJuveniles = stockingDensity * 0.05; // Assuming 50 grams per juvenile
+                    feedRequirementPerDay = totalWeightJuveniles * 0.04; // 4% of body weight
                     break;
                 case 'jumbo':
-                    averageFishWeightKg = 0.1; // 100 grams
-                    feedPercentage = 4; // 4% of body weight
+                    const totalWeightJumbo = stockingDensity * 0.2; // Assuming 200 grams per jumbo
+                    feedRequirementPerDay = totalWeightJumbo * 0.03; // 3% of body weight
                     break;
                 case 'growout':
-                    averageFishWeightKg = 0.2; // 200 grams
-                    feedPercentage = 3; // 3% of body weight
+                    const totalWeightGrowout = stockingDensity * 0.5; // Assuming 500 grams per growout
+                    feedRequirementPerDay = totalWeightGrowout * 0.02; // 2% of body weight
                     break;
                 default:
-                    alert('Please select a valid fish stage.');
-                    return;
+                    feedRequirementPerDay = 0;
             }
 
-            // Total weight of fish in kg
-            const totalFishWeightKg = averageFishWeightKg * numberOfFish;
-
-            // Calculate feed per day in kg
-            const totalFeedPerDay = (totalFishWeightKg * feedPercentage) / 100;
-
-            // Calculate feed per month in kg
-            const totalFeedPerMonth = totalFeedPerDay * 30;
-
-            document.getElementById('feedResult').innerText = `Total Feed per Day: ${totalFeedPerDay.toFixed(2)} kg`;
-            document.getElementById('monthlyFeedResult').innerText = `Total Feed per Month: ${totalFeedPerMonth.toFixed(2)} kg`;
+            document.getElementById('feedResult').innerText = `Daily Feed Requirement: ${feedRequirementPerDay.toFixed(2)} kg`;
         }
 
+        // Function to show popup ad
+        function showPopup() {
+            const popupAd = document.getElementById('popupAd');
+            popupAd.style.display = 'block';
+            setTimeout(() => {
+                popupAd.style.display = 'none';
+            }, 20000); // Show ad every 20 seconds
+        }
+
+        // Function to close popup ad
         function closePopup() {
-            document.getElementById('popupAd').style.display = 'none';
+            const popupAd = document.getElementById('popupAd');
+            popupAd.style.display = 'none';
         }
 
-        // Show the popup ad after 20 seconds
-        setTimeout(() => {
-            document.getElementById('popupAd').style.display = 'block';
-        }, 20000);
-
-        // Show the pond calculator by default
-        showTab('pondCalculator');
+        // Show popup ad initially
+        showPopup();
     </script>
 </body>
 
