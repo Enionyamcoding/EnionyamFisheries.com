@@ -12,31 +12,37 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Calculator Container */
-        .calculator-container {
-            width: 100%;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            box-sizing: border-box;
+        .tabs {
+            display: flex;
             margin-bottom: 20px;
         }
 
-        .calculator-container h2 {
-            text-align: center;
-            color: #00796b;
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-right: 5px;
         }
 
-        .calculator-container h3 {
-            text-align: center;
-            color: #00796b;
-            margin-top: -10px;
-            font-weight: normal;
+        .tab.active {
+            background-color: #004d40;
+        }
+
+        .tab-content {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .input-group {
@@ -50,7 +56,8 @@
             font-weight: bold;
         }
 
-        .input-group input {
+        .input-group input,
+        .input-group select {
             width: 100%;
             padding: 10px;
             border-radius: 5px;
@@ -145,7 +152,12 @@
 
 <body>
 
-    <div class="calculator-container">
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('pondCalculator')">Pond Calculator</button>
+        <button class="tab" onclick="showTab('feedCalculator')">Feed Calculator</button>
+    </div>
+
+    <div class="tab-content" id="pondCalculator">
         <h2>Pond Calculator</h2>
         <h3>Powered by Enionyam Fisheries</h3>
         <div class="input-group">
@@ -161,12 +173,32 @@
             <input type="number" id="depth" placeholder="Enter the depth of the pond">
         </div>
         <div class="input-group">
-            <button onclick="calculate()">Calculate</button>
+            <button onclick="calculatePond()">Calculate</button>
         </div>
         <div class="results">
             <p id="volumeResult"></p>
             <p id="stockingResult"></p>
             <p id="vinegarResult"></p>
+        </div>
+    </div>
+
+    <div class="tab-content" id="feedCalculator" style="display: none;">
+        <h2>Feed Calculator</h2>
+        <h3>Powered by Enionyam Fisheries</h3>
+        <div class="input-group">
+            <label for="stage">Select Fish Stage:</label>
+            <select id="stage">
+                <option value="fingerlings">Fingerlings</option>
+                <option value="juveniles">Juveniles</option>
+                <option value="jumbo">Jumbo</option>
+                <option value="growout">Growout</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <button onclick="calculateFeed()">Calculate Feed</button>
+        </div>
+        <div class="results">
+            <p id="feedResult"></p>
         </div>
     </div>
 
@@ -184,53 +216,89 @@
     </div>
 
     <script>
-        function calculate() {
-            // Get input values
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab');
+
+            tabs.forEach(tab => {
+                tab.style.display = tab.id === tabId ? 'block' : 'none';
+            });
+
+            tabButtons.forEach(button => {
+                button.classList.toggle('active', button.textContent.toLowerCase().includes(tabId));
+            });
+        }
+
+        function calculatePond() {
             const length = document.getElementById('length').value;
             const width = document.getElementById('width').value;
             const depth = document.getElementById('depth').value;
 
-            // Calculate volume in cubic feet
             const volumeCubicFeet = length * width * depth;
-
-            // Convert volume to gallons
             const volumeGallons = volumeCubicFeet * 7.48;
-
-            // Convert volume to liters
             const volumeLiters = volumeGallons * 3.785;
-
-            // Calculate stocking density (using 8 liters per fish)
             const stockingDensity = Math.floor(volumeLiters / 8);
+            const vinegarNeededLiters = volumeGallons * 0.001;
 
-            // Calculate vinegar needed (in liters)
-            const vinegarNeededLiters = volumeGallons * 0.001; // 1 ml per gallon, 0.001 liters per gallon
-
-            // Display results
             document.getElementById('volumeResult').innerText = `Pond Volume: ${volumeGallons.toFixed(2)} gallons (${volumeLiters.toFixed(2)} liters)`;
             document.getElementById('stockingResult').innerText = `Stocking Density: ${stockingDensity} fish`;
             document.getElementById('vinegarResult').innerText = `Vinegar Required: ${vinegarNeededLiters.toFixed(3)} liters`;
         }
 
-        // Function to close popup ad
-        function closePopup() {
-            const popupAd = document.getElementById('popupAd');
-            popupAd.style.display = 'none';
+        function calculateFeed() {
+            const stage = document.getElementById('stage').value;
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+            const depth = parseFloat(document.getElementById('depth').value);
 
-            setTimeout(function () {
-                popupAd.style.display = 'block';
-            }, 20000); // Popup reappears after 20 seconds
+            const volumeCubicFeet = length * width * depth;
+            const volumeGallons = volumeCubicFeet * 7.48;
+            const volumeLiters = volumeGallons * 3.785;
+            const stockingDensity = Math.floor(volumeLiters / 8);
+
+            let feedRequirementPerDay;
+            switch (stage) {
+                case 'fingerlings':
+                    const totalWeightFingerlings = stockingDensity * 0.01; // Assuming 10 grams per fingerling
+                    feedRequirementPerDay = totalWeightFingerlings * 0.05; // 5% of body weight
+                    break;
+                case 'juveniles':
+                    const totalWeightJuveniles = stockingDensity * 0.05; // Assuming 50 grams per juvenile
+                    feedRequirementPerDay = totalWeightJuveniles * 0.04; // 4% of body weight
+                    break;
+                case 'jumbo':
+                    const totalWeightJumbo = stockingDensity * 0.2; // Assuming 200 grams per jumbo
+                    feedRequirementPerDay = totalWeightJumbo * 0.03; // 3% of body weight
+                    break;
+                case 'growout':
+                    const totalWeightGrowout = stockingDensity * 0.5; // Assuming 500 grams per growout
+                    feedRequirementPerDay = totalWeightGrowout * 0.02; // 2% of body weight
+                    break;
+                default:
+                    feedRequirementPerDay = 0;
+            }
+
+            document.getElementById('feedResult').innerText = `Daily Feed Requirement: ${feedRequirementPerDay.toFixed(2)} kg`;
         }
 
         // Function to show popup ad
         function showPopup() {
             const popupAd = document.getElementById('popupAd');
             popupAd.style.display = 'block';
+            setTimeout(() => {
+                popupAd.style.display = 'none';
+            }, 20000); // Show ad every 20 seconds
         }
 
-        // Show popup ad initially after 10 seconds
-        setTimeout(showPopup, 10000);
-    </script>
+        // Function to close popup ad
+        function closePopup() {
+            const popupAd = document.getElementById('popupAd');
+            popupAd.style.display = 'none';
+        }
 
+        // Show popup ad initially
+        showPopup();
+    </script>
 </body>
 
 </html>
