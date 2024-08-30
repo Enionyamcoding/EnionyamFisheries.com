@@ -111,11 +111,17 @@
             display: none;
         }
 
-        .popup-ad img,
-        .popup-ad video {
+        .popup-ad img {
             width: 100%;
             height: auto;
             border-radius: 10px;
+            display: none;
+            /* Hide all images initially */
+        }
+
+        .popup-ad img.active {
+            display: block;
+            /* Show the active image */
         }
 
         .popup-ad .close-btn {
@@ -204,93 +210,119 @@
                 stage and the number of fish.</li>
         </ol>
     </div>
+    <!-- Popup Ad Space -->
     <div class="popup-ad" id="popupAd">
-        <!-- Popup Ad Image/Video -->
-        <img src="images/POND FILTERS (3).png" alt="ADVERTISE HERE">
-    <!-- <video src="your-popup-ad-video.mp4" controls></video>-->
-        <button class="close-btn" onclick="closePopup()">Close</button>
+        <!-- Popup Ad Image Slider -->
+        <img src="images/POND FILTERS 4.png" alt="Ad Image 1" class="active">
+        <img src="images/POND FILTERS.png" alt="Ad Image 2">
+        <img src="images/POND FILTERS (3).png" alt="Ad Image 3">
+        <img src="images/NEEMATONE GEL (5).png" alt="Ad Image 4">
+        <!-- Add more images as needed -->
+        <button class="close-btn" id="closeBtn" style="display: none;">Close</button>
     </div>
 
+
     <script>
-        function showTab(tabId) {
-            const tabs = document.querySelectorAll('.tab-content');
-            const tabButtons = document.querySelectorAll('.tab');
+         function showTab(tabId) {
+                const tabs = document.querySelectorAll('.tab-content');
+                const tabButtons = document.querySelectorAll('.tab');
 
-            tabs.forEach(tab => {
-                tab.style.display = tab.id === tabId ? 'block' : 'none';
-            });
+                tabs.forEach(tab => {
+                    tab.style.display = tab.id === tabId ? 'block' : 'none';
+                });
 
-            tabButtons.forEach(button => {
-                button.classList.toggle('active', button.textContent.toLowerCase().includes(tabId));
-            });
-        }
-
-        function calculatePond() {
-            const length = document.getElementById('length').value;
-            const width = document.getElementById('width').value;
-            const depth = document.getElementById('depth').value;
-
-            const volumeCubicFeet = length * width * depth;
-            const volumeGallons = volumeCubicFeet * 7.48;
-            const volumeLiters = volumeGallons * 3.785;
-            const stockingDensity = Math.floor(volumeLiters / 8);
-            const vinegarNeededLiters = volumeGallons * 0.001;
-
-            document.getElementById('volumeResult').innerText = `Pond Volume: ${volumeGallons.toFixed(2)} gallons (${volumeLiters.toFixed(2)} liters)`;
-            document.getElementById('stockingResult').innerText = `Stocking Density: ${stockingDensity} fish`;
-            document.getElementById('vinegarResult').innerText = `Vinegar Required: ${vinegarNeededLiters.toFixed(3)} liters`;
-        }
-
-        function calculateFeed() {
-            const stage = document.getElementById('stage').value;
-            const length = parseFloat(document.getElementById('length').value);
-            const width = parseFloat(document.getElementById('width').value);
-            const depth = parseFloat(document.getElementById('depth').value);
-
-            const volumeCubicFeet = length * width * depth;
-            const volumeGallons = volumeCubicFeet * 7.48;
-            const volumeLiters = volumeGallons * 3.785;
-            const stockingDensity = Math.floor(volumeLiters / 8);
-
-            let feedRequirementPerDay;
-            switch (stage) {
-                case 'fingerlings':
-                    const totalWeightFingerlings = stockingDensity * 0.01; // Assuming 10 grams per fingerling
-                    feedRequirementPerDay = totalWeightFingerlings * 0.05; // 5% of body weight
-                    break;
-                case 'juveniles':
-                    const totalWeightJuveniles = stockingDensity * 0.05; // Assuming 50 grams per juvenile
-                    feedRequirementPerDay = totalWeightJuveniles * 0.04; // 4% of body weight
-                    break;
-                case 'jumbo':
-                    const totalWeightJumbo = stockingDensity * 0.2; // Assuming 200 grams per jumbo
-                    feedRequirementPerDay = totalWeightJumbo * 0.03; // 3% of body weight
-                    break;
-                case 'growout':
-                    const totalWeightGrowout = stockingDensity * 0.5; // Assuming 500 grams per growout
-                    feedRequirementPerDay = totalWeightGrowout * 0.02; // 2% of body weight
-                    break;
-                default:
-                    feedRequirementPerDay = 0;
+                tabButtons.forEach(button => {
+                    button.classList.toggle('active', button.textContent.toLowerCase().includes(tabId));
+                });
             }
 
-            document.getElementById('feedResult').innerText = `Feed Requirement per Day: ${feedRequirementPerDay.toFixed(2)} kg`;
+            function calculatePond() {
+                const length = document.getElementById('length').value;
+                const width = document.getElementById('width').value;
+                const depth = document.getElementById('depth').value;
+
+                const volumeCubicFeet = length * width * depth;
+                const volumeGallons = volumeCubicFeet * 7.48;
+                const volumeLiters = volumeGallons * 3.785;
+                const stockingDensity = Math.floor(volumeLiters / 8);
+                const vinegarNeededLiters = volumeGallons * 0.001;
+
+                document.getElementById('volumeResult').innerText = `Pond Volume: ${volumeGallons.toFixed(2)} gallons (${volumeLiters.toFixed(2)} liters)`;
+                document.getElementById('stockingResult').innerText = `Stocking Density: ${stockingDensity} fish`;
+                document.getElementById('vinegarResult').innerText = `Vinegar Required: ${vinegarNeededLiters.toFixed(3)} liters`;
+            }
+
+            function calculateFeed() {
+                const stage = document.getElementById('stage').value;
+                const length = parseFloat(document.getElementById('length').value);
+                const width = parseFloat(document.getElementById('width').value);
+                const depth = parseFloat(document.getElementById('depth').value);
+
+                const volumeCubicFeet = length * width * depth;
+                const volumeGallons = volumeCubicFeet * 7.48;
+                const volumeLiters = volumeGallons * 3.785;
+                const stockingDensity = Math.floor(volumeLiters / 8);
+
+                let feedRequirementPerDay;
+                switch (stage) {
+                    case 'fingerlings':
+                        const totalWeightFingerlings = stockingDensity * 0.01; // Assuming 10 grams per fingerling
+                        feedRequirementPerDay = totalWeightFingerlings * 0.05; // 5% of body weight
+                        break;
+                    case 'juveniles':
+                        const totalWeightJuveniles = stockingDensity * 0.05; // Assuming 50 grams per juvenile
+                        feedRequirementPerDay = totalWeightJuveniles * 0.04; // 4% of body weight
+                        break;
+                    case 'jumbo':
+                        const totalWeightJumbo = stockingDensity * 0.2; // Assuming 200 grams per jumbo
+                        feedRequirementPerDay = totalWeightJumbo * 0.03; // 3% of body weight
+                        break;
+                    case 'growout':
+                        const totalWeightGrowout = stockingDensity * 0.5; // Assuming 500 grams per growout
+                        feedRequirementPerDay = totalWeightGrowout * 0.02; // 2% of body weight
+                        break;
+                    default:
+                        feedRequirementPerDay = 0;
+                }
+
+                document.getElementById('feedResult').innerText = `Feed Requirement per Day: ${feedRequirementPerDay.toFixed(2)} kg`;
+            }
+ function showPopup() {
+        const popupAd = document.getElementById('popupAd');
+        popupAd.style.display = 'block';
+        startSlider();
+        setTimeout(showCloseButton, 15000); // Show the close button after 15 seconds
+    }
+
+    function closePopup() {
+        document.getElementById('popupAd').style.display = 'none';
+        setTimeout(showPopup, 10000); // Show popup again after 10 seconds
+    }
+
+    function startSlider() {
+        const images = document.querySelectorAll('.popup-ad img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
         }
 
-        function showPopup() {
-            document.getElementById('popupAd').style.display = 'block';
-        }
+        setInterval(showNextImage, 4000); // Change image every 4 seconds
+    }
 
-        function closePopup() {
-            document.getElementById('popupAd').style.display = 'none';
-            setTimeout(showPopup, 20000); // Show popup again after 20 seconds
-        }
+    function showCloseButton() {
+        document.getElementById('closeBtn').style.display = 'inline-block';
+    }
 
-        window.onload = function () {
-            setTimeout(showPopup, 1000); // Show popup after 1 second
-        };
+    window.onload = function () {
+        setTimeout(showPopup, 5000); // Show popup after 5 seconds
+        document.getElementById('closeBtn').addEventListener('click', closePopup);
+    }
+
+
     </script>
-
 </body>
 
-</html>
+</html
