@@ -15,9 +15,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pond Calculator</title>
     <style>
-      /* Existing footer styling */
+     /* Existing footer styling */
 .footer {
-    background-color: #333;
+    background-color:seagreen;
     color: white;
     text-align: center;
     padding: 20px 0;
@@ -31,20 +31,27 @@
     font-family: Arial, sans-serif;
 }
 
+.contact-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
 .contact-buttons a {
-    margin: 0 10px;
-    padding: 10px 20px;
+    margin: 5px; /* Reduced margin to avoid overlap */
+    padding: 8px 15px; /* Reduced padding */
     background-color: #555;
     color: white;
     text-decoration: none;
     font-family: Arial, sans-serif;
     border-radius: 5px;
     transition: all 0.3s ease;
+    display: inline-block; /* Ensure buttons are inline */
 }
 
 .contact-buttons a:hover {
     background-color: #777;
-    transform: scale(1.1);
+    transform: scale(1.05); /* Slightly smaller scale effect */
 }
 
 /* New WhatsApp Group Button Styling */
@@ -58,179 +65,179 @@
     background-color: #128C7E; /* Darker WhatsApp Green */
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .contact-buttons a {
+        padding: 6px 12px; /* Further reduce padding on smaller screens */
+        font-size: 14px; /* Adjust font size */
+    }
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+@media (max-width: 480px) {
+    .contact-buttons a {
+        padding: 4px 10px; /* Even further reduce padding */
+        font-size: 12px; /* Smaller font size */
+    }
 
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-        }
+    .footer h3 {
+        font-size: 16px; /* Adjust heading size */
+    }
+}
 
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #00796b;
-            /* Pond Calculator tab color */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
 
-        .tab.active {
-            background-color: #004d40;
-        }
+    .contact-buttons {
+        display: flex;
+        gap: 10px; /* Space between buttons */
+        margin-top: 10px; /* Move buttons up slightly */
+    }
 
-        .tab-content {
-            width: 100%;
-            max-width: 800px;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    .contact-buttons a {
+        padding: 6px 12px; /* Reduced padding */
+        background-color: #32CD32; /* Lime green */
+        color: white;
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        height: 30px; /* Reduced height */
+        line-height: 30px; /* Vertically center text in button */
+        font-size: 12px; /* Adjust font size */
+    }
 
-        /* Additional styling remains unchanged */
+    .contact-buttons a:hover {
+        background-color: #FFD700; /* Gold */
+        transform: scale(1.1);
+    }
 
-        }
+    /* Additional styles for the tab content */
+    .tab-content {
+        width: 100%;
+        max-width: 800px;
+        background-color: #ffffff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* Additional styles for other elements */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #e0f7fa;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .tabs {
-            display: flex;
-            margin-bottom: 20px;
-        }
+    .tabs {
+        display: flex;
+        margin-bottom: 20px;
+    }
 
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #00796b;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #00796b; /* Pond Calculator tab color */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        margin-right: 5px;
+    }
 
-        .tab.active {
-            background-color: #004d40;
-        }
+    .tab.active {
+        background-color: #004d40;
+    }
 
-        .tab-content {
-            width: 100%;
-            max-width: 800px;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    .input-group {
+        margin-bottom: 15px;
+    }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #004d40;
+        font-weight: bold;
+    }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #004d40;
-            font-weight: bold;
-        }
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #004d40;
+        box-sizing: border-box;
+    }
 
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #004d40;
-            box-sizing: border-box;
-        }
+    .input-group button {
+        width: 100%;
+        padding: 12px;
+        background-color: #00796b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+    }
 
-        .input-group button {
-            width: 100%;
-            padding: 12px;
-            background-color: #00796b;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
+    .input-group button:hover {
+        background-color: #004d40;
+    }
 
-        .input-group button:hover {
-            background-color: #004d40;
-        }
+    .results {
+        margin-top: 20px;
+    }
 
-        .results {
-            margin-top: 20px;
-        }
+    .results p {
+        margin: 0;
+        padding: 10px;
+        background-color: #b2dfdb;
+        border-radius: 5px;
+        color: #004d40;
+        font-weight: bold;
+    }
 
-        .results p {
-            margin: 0;
-            padding: 10px;
-            background-color: #b2dfdb;
-            border-radius: 5px;
-            color: #004d40;
-            font-weight: bold;
-        }
+    /* Popup Ad Space */
+    .popup-ad {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 600px;
+        background-color: #ffffff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        z-index: 1000;
+        display: none;
+    }
 
-        /* Popup Ad Space */
-        .popup-ad {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 600px;
-            background-color: #ffffff;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            z-index: 1000;
-            display: none;
-        }
+    .popup-ad img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        display: none; /* Hide all images initially */
+    }
 
-        .popup-ad img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            display: none;
-            /* Hide all images initially */
-        }
+    .popup-ad img.active {
+        display: block; /* Show the active image */
+    }
 
-        .popup-ad img.active {
-            display: block;
-            /* Show the active image */
-        }
-
-        .popup-ad .close-btn {
-            background-color: #00796b;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+    .popup-ad .close-btn {
+        background-color: #00796b;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+    }
     </style>
 </head>
 
@@ -425,19 +432,18 @@
 
 
     </script>
-   <!-- Footer -->
-<div class="footer">
-    <h3>Contact Us</h3>
-    <div class="contact-buttons">
-        <a href="https://wa.me/233244623141" target="_blank">WhatsApp</a>
-        <a href="https://web.facebook.com/Enionyamfisheries/" target="_blank">Facebook</a>
-        <a href="mailto:enionyamfisheries@outlook.com">Email</a>
-        <!-- New WhatsApp Group Button -->
-        <a href="https://chat.whatsapp.com/DmvLSxqsVXlAJIz7hjzN1A" target="_blank" class="whatsapp-group-button">Join WhatsApp Group</a>
+    <!-- Footer -->
+    <div class="footer">
+        <h3>Contact Us</h3>
+        <div class="contact-buttons">
+            <a href="https://wa.me/233244623141" target="_blank">WhatsApp</a>
+            <a href="https://web.facebook.com/Enionyamfisheries/" target="_blank">Facebook</a>
+            <a href="mailto:enionyamfisheries@outlook.com">Email</a>
+            <!-- New WhatsApp Group Button -->
+            <a href="https://chat.whatsapp.com/DmvLSxqsVXlAJIz7hjzN1A" target="_blank"
+                class="whatsapp-group-button">Join WhatsApp Group</a>
+        </div>
     </div>
-</div>
 
 
 </body>
-
-</html>
